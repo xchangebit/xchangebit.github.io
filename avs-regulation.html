@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Age Verification Regulations in the US, Europe and worldwide. Suggestions about which methods can be used in which countries">
+    <meta name="og:description" content="Age Verification Regulations in the US, Europe and worldwide. Suggestions about which methods can be used in which countries">
+    <meta name="og:title" content="Age Verification Regulations">
+    <meta name="twitter:description" content="Age Verification Regulations in the US, Europe and worldwide. Suggestions about which methods can be used in which countries">
+    <meta name="twitter:title" content="Age Verification Regulations">
+    <meta name="twitter:card" content="summary">
+    <meta http-equiv="content-language" content="en">
+    <title>Age Verification Regulations</title>
+    <link rel="shortcut icon" href="https://info.yoti.com/hubfs/Yoti_icon.jpg">
+    <!-- Load Tailwind CSS for styling -->
+    <script src="//cdn.tailwindcss.com"></script>
+    <!-- Load D3.js and TopoJSON for the map -->
+    <script src="//d3js.org/d3.v7.min.js"></script>
+    <script src="//unpkg.com/topojson-client@3"></script>
+    <!-- Load Rubik font from Google Fonts to match Yoti's branding -->
+    <link rel="preconnect" href="//fonts.googleapis.com">
+    <link rel="preconnect" href="//fonts.gstatic.com" crossorigin>
+    <link href="//fonts.googleapis.com/css2?family=Rubik:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        /* Custom styles inspired by developers.yoti.com */
+        body {
+            font-family: 'Rubik', sans-serif;
+            background-color: #f8fafc; /* slate-50 */
+            color: #1e293b; /* slate-800 */
+            letter-spacing: -0.01em;
+            scroll-behavior: smooth;
+        }
+
+        /* Style for the map paths (countries and states) */
+        .country, .state {
+            stroke: #e2e8f0; /* slate-200 */
+            stroke-width: 0.5px;
+            cursor: pointer;
+            transition: fill 0.3s ease;
+        }
+
+        /* Default fill for regions without specific data */
+        .default-fill {
+            fill: #e2e8f0; /* slate-200 */
+        }
+
+        /* Fill for regions that have regulation data - Yoti Purple */
+        .has-data {
+            fill: #4707e3;
+        }
+        
+        /* Hover effect for all regions - Yoti Pink */
+        .country:hover, .state:hover {
+            fill: #d6006c;
+        }
+
+        /* Style for the currently selected region - Yoti Green */
+        .selected {
+            fill: #00d66c;
+            stroke: transparent;
+            stroke-width: 0.5px;
+        }
+
+        /* Custom list style for the info panel */
+        .info-list li {
+            position: relative;
+            padding-left: 1.5rem; 
+        }
+
+        .info-list li::before {
+            content: '✓';
+            position: absolute;
+            left: 0;
+            color: #4707e3; /* Yoti Purple */
+            font-weight: bold;
+        }
+        
+        /* Custom styles for form inputs */
+        .form-input {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            border-radius: 0.5rem;
+            border: 1px solid #cbd5e1; /* slate-300 */
+            background-color: white;
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+        }
+        .form-input:focus {
+            outline: none;
+            border-color: #4707e3;
+            box-shadow: 0 0 0 2px rgba(71, 7, 227, 0.2);
+        }
+
+    </style>
+</head>
+<body class="antialiased">
+
+    <div class="container mx-auto p-4 md:p-8">
+        <header class="text-center mb-10">
+            <h1 class="text-4xl md:text-5xl font-bold text-slate-900 tracking-tight">Age Verification Regulations Map</h1>
+            <p class="mt-4 text-lg text-slate-600 max-w-2xl mx-auto">An interactive guide to global age regulations. Click on a country or state to find out more.</p>
+            <p class="mt-4 text-sm text-slate-600 max-w-2xl mx-auto">Information on this page should not be taken as legal advice.</p>
+        </header>
+
+        <div class="flex flex-col lg:flex-row gap-8">
+            
+            <!-- Map container -->
+            <div id="map-container" class="w-full lg:w-2/3 bg-white p-4 rounded-2xl shadow-sm border border-slate-200/80">
+                <svg id="map" class="w-full h-full min-h-[500px]"></svg>
+            </div>
+
+            <!-- Information panel -->
+            <div id="info-panel" class="w-full lg:w-1/3 bg-white p-6 rounded-2xl shadow-sm border border-slate-200/80 self-start">
+                <h2 id="info-title" class="text-2xl font-bold mb-4 text-slate-900 tracking-tight">Select a Region</h2>
+                <div id="info-content" class="space-y-6 text-slate-700 leading-relaxed">
+                     <p>Click on a highlighted country or US state on the map to see the relevant age verification regulations.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Contact Sales Form Section -->
+        <section id="contact-form-section" class="mt-16 bg-white p-8 md:p-12 rounded-2xl shadow-sm border border-slate-200/80">
+            <div class="max-w-4xl mx-auto">
+                <h2 class="text-3xl md:text-4xl font-bold text-center text-slate-900 tracking-tight">If you want to find out more</h2>
+                <p class="mt-4 text-lg text-center text-slate-600">Fill out the form below and we'll be in touch shortly.</p>
+                
+                <form id="sales-form" class="mt-10 grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-6">
+                    <div>
+                        <label for="first-name" class="block text-sm font-medium text-slate-700">First name</label>
+                        <input type="text" id="first-name" required class="mt-1 form-input">
+                    </div>
+                    <div>
+                        <label for="last-name" class="block text-sm font-medium text-slate-700">Last name</label>
+                        <input type="text" id="last-name" required class="mt-1 form-input">
+                    </div>
+                    <div class="md:col-span-2">
+                        <label for="work-email" class="block text-sm font-medium text-slate-700">Professional email</label>
+                        <input type="email" id="work-email" required class="mt-1 form-input">
+                    </div>
+                    <div>
+                        <label for="company" class="block text-sm font-medium text-slate-700">Company</label>
+                        <input type="text" id="company" required class="mt-1 form-input">
+                    </div>
+                    <div>
+                        <label for="job-title" class="block text-sm font-medium text-slate-700">Job title</label>
+                        <input type="text" id="job-title" class="mt-1 form-input">
+                    </div>
+                    <div>
+                        <label for="country" class="block text-sm font-medium text-slate-700">Country</label>
+                        <select id="country" required class="mt-1 form-input">
+                            <option value="" disabled selected>Please Select</option>
+                            <option value="United Kingdom">United Kingdom</option>
+                            <option value="United States">United States</option>
+                            <option value="Canada">Canada</option>
+                            <option value="Germany">Germany</option>
+                            <option value="France">France</option>
+                            <option value="Australia">Australia</option>
+                        </select>
+                    </div>
+                     <div>
+                        <label for="volume" class="block text-sm font-medium text-slate-700">Estimated monthly verifications</label>
+                        <select id="volume" required class="mt-1 form-input">
+                            <option value="" disabled selected>Please Select</option>
+                            <option value="0-1000">0 - 1,000</option>
+                            <option value="1001-10000">1,001 - 10,000</option>
+                            <option value="10001-50000">10,001 - 50,000</option>
+                            <option value="50001+">50,001+</option>
+                        </select>
+                    </div>
+                    <div class="md:col-span-2">
+                         <label for="message" class="block text-sm font-medium text-slate-700">How can we help?</label>
+                         <textarea id="message" rows="4" class="mt-1 form-input" placeholder="Tell us which regulations are concerned with and the names or websites you think will be effeced"></textarea>
+                    </div>
+                    <div class="md:col-span-2 flex justify-center">
+                        <button type="submit" class="mt-4 w-full md:w-auto px-12 py-3 rounded-full bg-[#4707e3] text-white font-bold text-lg hover:bg-[#d6006c] transition-colors duration-300">Submit</button>
+                    </div>
+                </form>
+                <div id="form-success-message" class="mt-6 text-center text-green-600 font-bold hidden">
+                    Thank you for your message! We'll be in touch soon.
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <script>
+        // --- DATA ---
+        const regulationData = {
+            "Alabama": {
+                regulation: "Requires 'Reasonable age verification'. This can include a digitized ID card, government-issued identification, or any commercially reasonable method with Identity Assurance Level 2 (IAL2).",
+                solutions: ["Yoti Digital ID Wallet", "Facial Age Estimation", "Age from ID Document", "Age Tokens", "Email Age Inference", "Mobile age check", "Database checks", "SSN checks", "Credit Card checks"]
+            },
+            "Arizona": {
+                regulation: "Requires 'Reasonable age verification'. This can include a digitized ID card, government-issued identification, or any commercially reasonable method with Identity Assurance Level 2 (IAL2).",
+                solutions: ["Yoti Digital ID Wallet", "Facial Age Estimation", "Age from ID Document", "Age Tokens", "Email Age Inference", "Mobile age check", "Database checks", "SSN checks", "Credit Card checks"]
+            },
+            "Arkansas": {
+                regulation: "Requires 'Reasonable age verification'. This can include a digitized ID card, government-issued identification, or any commercially reasonable method with Identity Assurance Level 2 (IAL2).",
+                solutions: ["Yoti Digital ID Wallet", "Age from ID Document", "Facial Age Estimation"]
+            },
+            "Florida": {
+                regulation: "A choice must be offered between 'Standard age verification' (any commercially reasonable method) and 'Anonymous age verification' (conducted by a US-based, non-foreign-controlled third party that does not retain personal data).",
+                solutions: ["<b>For 'Standard':</b> Facial Age Estimation, Yoti Digital ID Wallet, Mobile age check, Database checks, SSN checks, Credit Card checks, Yoti Keys, Age Tokens", "<b>For 'Anonymous':</b> Yoti has partnered with a US-based company to provide a compliant solution."]
+            },
+            "Georgia": {
+                regulation: "Requires 'Reasonable age verification methods' which can include digitized ID cards, verification via a third-party service using a commercially available database, or any method relying on public or private transactional data.",
+                solutions: ["Yoti Digital ID Wallet", "Age from ID Document", "Facial Age Estimation"]
+            },
+            "Idaho": {
+                regulation: "Requires 'Reasonable age verification methods' which can include digitized ID cards, verification via a third-party service using a commercially available database, or any method relying on public or private transactional data.",
+                solutions: ["Yoti Digital ID Wallet", "Age from ID Document", "Age Tokens", "Email Age Inference", "Mobile age check", "Database checks", "SSN checks", "Credit Card checks"]
+            },
+            "Indiana": {
+                regulation: "Requires 'Reasonable age verification methods' which can include digitized ID cards, verification via a third-party service using a commercially available database, or any method relying on public or private transactional data.",
+                solutions: ["Yoti Digital ID Wallet", "Age Tokens", "Email Age Inference", "Mobile age check", "Database checks", "SSN checks", "Credit Card checks"]
+            },
+            "Kansas": {
+                regulation: "Methods include using a 'commercially available database' or 'any other commercially reasonable method of age and identity verification'. Methods require approval by the state's Attorney General.",
+                solutions: ["Age Tokens", "Facial Age Estimation", "Age from ID Document", "Yoti Digital ID Wallet", "Email Age Inference", "Mobile age check", "Database checks", "SSN checks", "Credit Card checks"]
+            },
+            "Kentucky": {
+                regulation: "Methods include using a 'commercially available database' or 'any other commercially reasonable method of age and identity verification'. Methods require approval by the state's Attorney General.",
+                solutions: ["Age Tokens", "Facial Age Estimation", "Age from ID Document", "Yoti Digital ID Wallet", "Email Age Inference", "Mobile age check", "Database checks", "SSN checks", "Credit Card checks"]
+            },
+            "Louisiana": {
+                regulation: "Requires 'Reasonable age verification methods' which can include digitized ID cards, verification via a third-party service using a commercially available database, or any method relying on public or private transactional data.",
+                solutions: ["Louisiana's LA Wallet", "Yoti Digital ID Wallet", "Facial Age Estimation", "Age from ID Document", "Age Tokens", "Email Age Inference", "Mobile age check", "Database checks", "SSN checks", "Credit Card checks"]
+            },
+            "Mississippi": {
+                regulation: "Requires 'Reasonable age verification methods' which can include digitized ID cards, verification via a third-party service using a commercially available database, or any method relying on public or private transactional data.",
+                solutions: ["Yoti Digital ID Wallet", "Facial Age Estimation", "Age from ID Document", "Age Tokens", "Email Age Inference", "Mobile age check", "Database checks", "SSN checks", "Credit Card checks"]
+            },
+            "Montana": {
+                regulation: "Requires 'Reasonable age verification methods' which can include digitized ID cards, verification via a third-party service using a commercially available database, or any method relying on public or private transactional data  for the purpose of satisfying a request or event.",
+                solutions: ["Yoti Digital ID Wallet", "Facial Age Estimation", "Age from ID Document", "Age Tokens", "Email Age Inference", "Mobile age check", "Database checks", "SSN checks", "Credit Card checks"]
+            },
+            "Nebraska": {
+                regulation: "Requires 'Reasonable age verification methods' which can include digitized ID cards, verification via a third-party service using a commercially available database, or any method relying on public or private transactional data.",
+                solutions: ["Yoti Digital ID Wallet", "Facial Age Estimation", "Age from ID Document", "Age Tokens", "Email Age Inference", "Mobile age check", "Database checks", "SSN checks", "Credit Card checks"]
+            },
+            "Oklahoma": {
+                regulation: "'Reasonable age verification methods' include digitized ID cards, verification via a third-party service using a commercially available database, or any method relying on public or private transactional data.",
+                solutions: ["Yoti Digital ID Wallet", "Facial Age Estimation", "Age from ID Document", "SSN checks", "Credit Card checks", "Age Tokens", "Email Age Inference", "Mobile age check", "Database checks"]
+            },
+            "South Carolina": {
+                regulation: "'Reasonable age verification methods' include digitized ID cards, verification via a third-party service using a commercially available database, or any method relying on public or private transactional data.",
+                solutions: ["Yoti Digital ID Wallet", "Facial Age Estimation", "Age from ID Document", "Age Tokens", "Email Age Inference", "Mobile age check", "Database checks", "SSN checks", "Credit Card checks"]
+            },
+            "Tennessee": {
+                regulation: "Requires 'government ID with a liveness test' and must use 'the device by which the attempt to view content' is being made.' Tennesse also requires reverification every 60 minutes.",
+                solutions: ["Age from ID Document", "Yoti Digital ID Wallet", "Yoti Keys", "Age Tokens"]
+            },
+            "Texas": {
+                regulation: "Requires 'Reasonable age verification methods' which can include digital identification, verification via a third-party service using a commercially available database, or any method relying on public or private transactional data. Further clarification was provided by the Fifth Circuit Court of Appeals, stating that 'companies could use techniques such as “selfie matching” or age estimation.'",
+                solutions: ["Facial Age Estimation", "Age from ID Document", "Yoti Digital ID Wallet", "Email Age Inference", "Mobile age check", "Database checks", "SSN checks", "Credit Card checks", "Age Tokens"]
+            },
+            "Utah": {
+                regulation: "Similar to Oklahoma, with strict rules against retaining identifying information after verification. The AG's office has shown support for privacy-preserving methods like age estimation.",
+                solutions: ["Facial Age Estimation", "Age from ID Document", "Yoti Digital ID Wallet", "Email Age Inference", "Mobile age check", "Database checks", "SSN checks", "Credit Card checks", "Age Tokens"]
+            },
+            "Virginia": {
+                regulation: "Requires 'Reasonable age verification methods' which can include digitized ID cards, verification via a third-party service using a commercially available database, or any method relying on public or private transactional data.",
+                solutions: ["Yoti Digital ID Wallet", "Facial Age Estimation", "Age from ID Document", "Age Tokens", "Email Age Inference", "Mobile age check", "Database checks", "SSN checks", "Credit Card checks"],
+            },
+            "Germany": {
+                regulation: "KJM evaluates and approves age verification systems.",
+                solutions: ["Digital ID Wallet", "Facial Age Estimation", "Age from ID Document"]
+            },
+            "Finland": {
+                regulation: "Traficom and KAVI are the regulators responsible for The Finnish Act On Audiovisual Programmes (710/2011). Like much of the EU, Finland's regulation focuses on effectiveness, user control over data, privacy and a proportionality with less emphasis on specific technologies and techniques.",
+                solutions: ["FTN", "Yoti Digital ID Wallet", "Age from ID Document", "Facial Age Estimation", "Yoti Keys", "Credit Card checks"]
+            },
+            "France": {
+                regulation: "ARCOM (the French regulator) has detailed requirements focusing on reliability (liveness detection), user control over data, data minimization, and a 'double-anonymity' principle to protect users.",
+                solutions: ["Yoti Digital ID Wallet", "The system is designed to provide 'double-anonymity' by separating the age proof from the user's identity and the requesting platform.", "Facial Age Estimation and ID Verification are also offered.", "Age Tokens (with passkey)"]
+            },
+            "Ireland": {
+                regulation: "Coimisiún na Meán (the Irish regulator) are responsible for Online Safety Code",
+                solutions: ["Facial Age Estimation", "Age from ID Document", "Yoti Digital ID Wallet", "Yoti Keys", "Age Tokens", "Email Age Inference", "Credit Card Age Inference"]
+            },
+            "Italy": {
+                regulation: "AGCOM (the Italian regulator) has detailed requirements focusing on  user control over data, data minimization, and a 'double-anonymity' principle to protect users.",
+                solutions: ["Yoti Digital ID Wallet", "The system is designed to provide 'double-anonymity' by separating the age proof from the user's identity and the requesting platform."]
+            },
+            "Poland": {
+                regulation: "The Polish government is currently advancing a new Act on the protection of minors from harmful online content. This proposed legislation will oblige any service provider offering access to pornographic content to implement strict age verification mechanisms, moving beyond simple self-declaration",
+                solutions: ["TBC"]
+            },
+            "Spain": {
+                regulation: "Spain is in the final stages of approving its new Organic Law for the Protection of Minors in Digital Environments. This comprehensive law will criminalize making pornographic material indiscriminately available to minors and legally mandates the use of effective age verification systems on adult platforms.",
+                solutions: ["TBC"]
+            },
+            "Sweden": {
+                regulation: "Regulation is primarily focused on data protection and privacy, with the Swedish Data Protection Authority (IMY) overseeing compliance.",
+                solutions: ["Swedish Bank ID", "Facial Age Estimation", "Age from ID Document", "Yoti Digital ID Wallet"]
+            },
+            "United Kingdom": {
+                regulation: "OFCOM provided guidance on the requirements for highly effective age assurance measures to be implemented. A separate regulator, the ICO focuses on data protection and privacy.",
+                solutions: ["Facial Age Estimation", "Age from ID Document", "Yoti Digital ID Wallet", "Post Office Easy ID", "Lloyds Bank Smart ID", "Yoti Keys", "Age Tokens", "Mobile age check", "Email Age Inference", "Credit Card Age Inference"]
+            },
+            
+        };
+
+        // --- MAP & INTERACTIVITY LOGIC ---
+        const svg = d3.select("#map");
+        const { width, height } = svg.node().getBoundingClientRect();
+        
+        const projection = d3.geoMercator()
+            .scale(width / 2 / Math.PI)
+            .translate([width / 2, height / 1.5]);
+
+        const path = d3.geoPath().projection(projection);
+
+        const zoom = d3.zoom()
+            .scaleExtent([1, 10])
+            .on("zoom", zoomed);
+
+        svg.call(zoom);
+
+        const g = svg.append("g");
+        
+        const infoTitle = document.getElementById("info-title");
+        const infoContent = document.getElementById("info-content");
+
+        // Define hardcoded zoom presets for continents
+        const zoomPresets = {
+            'NA': { scale: 2.2, x: -width * 0.7, y: -height * 0.1 },
+            'EU': { scale: 4, x: -width * 1.3, y: -height * 0.4 },
+        };
+        
+        function zoomed(event) {
+            g.attr("transform", event.transform);
+        }
+        
+        // Zooms to a specific geographic feature (country or state)
+        function zoomToSelection(d, duration = 750) {
+            if (!d) return;
+
+            const bounds = path.bounds(d);
+            const dx = bounds[1][0] - bounds[0][0];
+            const dy = bounds[1][1] - bounds[0][1];
+            const x = (bounds[0][0] + bounds[1][0]) / 2;
+            const y = (bounds[0][1] + bounds[1][1]) / 2;
+            const scale = Math.max(1, Math.min(10, 0.9 / Math.max(dx / width, dy / height)));
+            const translate = [width / 2 - scale * x, height / 2 - scale * y];
+
+            svg.transition()
+                .duration(duration)
+                .call(zoom.transform, d3.zoomIdentity.translate(translate[0], translate[1]).scale(scale));
+        }
+        
+        // Applies a predefined zoom level, e.g., for a continent
+        function applyPresetZoom(presetKey, duration = 750) {
+            const preset = zoomPresets[presetKey];
+            if (!preset) return;
+            
+            const transform = d3.zoomIdentity.translate(preset.x, preset.y).scale(preset.scale);
+            
+            svg.transition()
+                .duration(duration)
+                .call(zoom.transform, transform);
+        }
+        
+        // Handles clicks on a region, updates info, and zooms
+        function clicked(d, type, duration = 750) {
+            if (!d) return;
+            const regionName = d.properties.name;
+            const data = regulationData[regionName];
+
+            infoTitle.textContent = regionName;
+            if (data) {
+                infoContent.innerHTML = `
+                    <div class="space-y-6">
+                        <div>
+                            <h3 class="font-bold text-lg text-slate-800 tracking-tight">Regulation Summary</h3>
+                            <p class="mt-2">${data.regulation}</p>
+                        </div>
+                        <div>
+                            <h3 class="font-bold text-lg text-slate-800 tracking-tight">Applicable Solutions</h3>
+                            <ul class="info-list mt-2 space-y-2">
+                                ${data.solutions.map(sol => `<li>${sol}</li>`).join('')}
+                            </ul>
+                        </div>
+                    </div>
+                `;
+            } else {
+                infoContent.innerHTML = `<p>No specific regulation data is available for this region.</p>`;
+            }
+
+            d3.selectAll('.country.selected, .state.selected').classed('selected', false);
+            const selector = `${type}[d='${path(d)}']`;
+            d3.select(selector).classed('selected', true);
+            
+            zoomToSelection(d, duration);
+
+            if (window.innerWidth < 1024) {
+                 document.getElementById('info-panel').scrollIntoView({ behavior: 'smooth' });
+            }
+        }
+
+        // --- DATA LOADING AND INITIALIZATION ---
+        Promise.all([
+            d3.json("https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json"),
+            d3.json("https://cdn.jsdelivr.net/npm/us-atlas@3/states-10m.json")
+        ]).then(([world, us]) => {
+            const countries = topojson.feature(world, world.objects.countries);
+            const states = topojson.feature(us, us.objects.states);
+
+            // Draw countries and states
+            // Filter out country 'Georgia' to prevent conflict with US state 'Georgia'
+            g.selectAll(".country")
+                .data(countries.features.filter(d => d.properties.name !== 'Georgia'))
+                .enter().append("path")
+                .attr("class", d => `country ${regulationData[d.properties.name] ? 'has-data' : 'default-fill'}`)
+                .attr("d", path)
+                .on("click", (event, d) => clicked(d, ".country"));
+
+            g.selectAll(".state")
+                .data(states.features)
+                .enter().append("path")
+                .attr("class", d => `state ${regulationData[d.properties.name] ? 'has-data' : 'default-fill'}`)
+                .attr("d", path)
+                .on("click", (event, d) => clicked(d, ".state"));
+            
+            // Handle URL parameters for initial view
+            const urlParams = new URLSearchParams(window.location.search);
+            const selectParam = urlParams.get('select');
+            const zoomParam = url_params.get('zoom');
+
+            if (selectParam) {
+                let selectedFeature = 
+                    states.features.find(f => f.properties.name === selectParam) || 
+                    countries.features.find(f => f.properties.name === selectParam);
+                
+                let featureType = states.features.some(f => f.properties.name === selectParam) ? '.state' : '.country';
+
+                if (selectedFeature) {
+                    // Call clicked with 0 duration for immediate effect on load
+                    clicked(selectedFeature, featureType, 0);
+                }
+            } else if (zoomParam) {
+                applyPresetZoom(zoomParam.toUpperCase(), 0);
+            }
+        });
+
+        // --- FORM HANDLING ---
+        const salesForm = document.getElementById('sales-form');
+        const successMessage = document.getElementById('form-success-message');
+        
+        salesForm.addEventListener('submit', function(event) {
+            event.preventDefault(); // Prevent actual form submission
+            successMessage.classList.remove('hidden');
+            salesForm.reset();
+            
+            // Optional: Hide the message after a few seconds
+            setTimeout(() => {
+                successMessage.classList.add('hidden');
+            }, 5000);
+        });
+    </script>
+
+</body>
+</html>
