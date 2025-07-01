@@ -121,7 +121,7 @@
     // 1. Check if we are on a mobile device
     const isMobile = /Android|iPhone/i.test(navigator.userAgent);
 
-    if (isMobile) {
+    if (isMobile || true) {
       window.addEventListener('beforeinstallprompt', (e) => {
         // Prevent the default mini-infobar
         e.preventDefault();
