@@ -3,62 +3,123 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Age Verification</title>
+  <title>QR Scanner</title>
   <link rel="manifest" href="manifest.json">
-  <meta name="theme-color" content="#4a90e2">
+  <meta name="theme-color" content="#333">
+  <script src="https://cdn.jsdelivr.net/npm/jsqr@1.4.0/dist/jsQR.js"></script>
+  <style>
+    body {
+      font-family: sans-serif;
+      background-color: #111;
+      color: white;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+    }
+    #scanner-container {
+      width: 100%;
+      max-width: 500px;
+      text-align: center;
+      border-radius: 8px;
+      overflow: hidden; /* Ensures video stays within rounded corners */
+    }
+    video {
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+    #output {
+      background-color: #222;
+      padding: 20px;
+      word-wrap: break-word; /* Wraps long QR code data */
+      font-size: 1.1em;
+      min-height: 50px;
+    }
+    #output-label {
+      font-size: 0.8em;
+      color: #aaa;
+      margin-bottom: 5px;
+    }
+    #loading-message {
+      font-size: 1.2em;
+    }
+  </style>
 </head>
 <body>
-  <p>Hello</p>
+
+  <div id="loading-message">🎥 Starting camera... Please grant permission.</div>
+
+  <div id="scanner-container" style="display: none;">
+    <video id="video" playsinline></video>
+    <div id="output">
+      <div id="output-label">Scanned QR Code Data:</div>
+      <div id="output-data"></div>
+    </div>
+  </div>
+
+  <canvas id="canvas" style="display: none;"></canvas>
+
   <script>
-    self.addEventListener('install', () => {
-    console.log('Service worker installing...');
-    });
+    const video = document.getElementById("video");
+    const canvasElement = document.getElementById("canvas");
+    const canvas = canvasElement.getContext("2d");
+    const loadingMessage = document.getElementById("loading-message");
+    const scannerContainer = document.getElementById("scanner-container");
+    const outputData = document.getElementById("output-data");
 
-    self.addEventListener('fetch', () => {
-    return;
-    });
-  </script>
+    // Use navigator.mediaDevices.getUserMedia to access the camera
+    navigator.mediaDevices.getUserMedia({ video: { facingMode: "environment" } })
+      .then(function(stream) {
+        video.srcObject = stream;
+        video.setAttribute("playsinline", true); // Required to work on iOS
+        video.play();
+        requestAnimationFrame(tick); // Start scanning
+      })
+      .catch(function(err) {
+        loadingMessage.textContent = "ERROR: Could not access camera. " + err;
+        console.error("Camera access error:", err);
+      });
 
-  <script>
-    // --- Custom Install Prompt Logic ---
+    function tick() {
+      if (video.readyState === video.HAVE_ENOUGH_DATA) {
+        loadingMessage.style.display = 'none';
+        scannerContainer.style.display = 'block';
 
-    let deferredPrompt; // This variable will hold the install prompt event
-    const installButton = document.getElementById('install-button');
+        // Set canvas size to match video
+        canvasElement.height = video.videoHeight;
+        canvasElement.width = video.videoWidth;
+        
+        // Draw the current video frame to the canvas
+        canvas.drawImage(video, 0, 0, canvasElement.width, canvasElement.height);
+        
+        // Get image data from canvas
+        const imageData = canvas.getImageData(0, 0, canvasElement.width, canvasElement.height);
+        
+        // Use jsQR to check for a QR code
+        const code = jsQR(imageData.data, imageData.width, imageData.height, {
+          inversionAttempts: "dontInvert",
+        });
 
-    window.addEventListener('beforeinstallprompt', (e) => {
-      // Prevent the mini-infobar from appearing on mobile
-      e.preventDefault();
-      // Stash the event so it can be triggered later.
-      deferredPrompt = e;
-      // Update UI to notify the user they can install the PWA
-      console.log(`'beforeinstallprompt' event was fired.`);
-      installButton.style.display = 'block';
-    });
+        if (code) {
+          // If a code is found, display its data
+          outputData.innerText = code.data;
+        }
+      }
+      // Continue scanning on the next frame
+      requestAnimationFrame(tick);
+    }
 
-    installButton.addEventListener('click', async () => {
-      // Hide the app provided install promotion
-      installButton.style.display = 'none';
-      // Show the install prompt
-      deferredPrompt.prompt();
-      // Wait for the user to respond to the prompt
-      const { outcome } = await deferredPrompt.userChoice;
-      console.log(`User response to the install prompt: ${outcome}`);
-      // We've used the prompt, and can't use it again, throw it away
-      deferredPrompt = null;
-    });
-
-    // --- Original Logic ---
-
-    // Register the service worker
+    // Register service worker for PWA installability
     if ('serviceWorker' in navigator) {
       window.addEventListener('load', () => {
-        navigator.serviceWorker.register('/service-worker.js').then(registration => {
-          console.log('ServiceWorker registration successful with scope: ', registration.scope);
-        }, err => {
-          console.log('ServiceWorker registration failed: ', err);
-        });
+        navigator.serviceWorker.register('/service-worker.js');
       });
     }
   </script>
+
 </body>
 </html>
