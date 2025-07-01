@@ -3,7 +3,7 @@
   "name": "Yoti Age Verification",
   "icons": [],
   "start_url": "/pwa.html",
-  "display": "standalone",
+  "display": "fullscreen",
   "theme_color": "#4a90e2",
   "background_color": "#ffffff"
 }
