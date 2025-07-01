@@ -86,7 +86,7 @@
 </head>
 <body>
     <header>
-    <img id="logo" src="https://via.placeholder.com/150" alt="Logo">
+    <img id="logo" src="https://picsum.photos/150" alt="Logo">
   </header>
 
   <main>
@@ -116,7 +116,7 @@
     let deferredPrompt;
 
     // 1. Check if we are on a mobile device
-    const isMobile = /Mobi/i.test(window.navigator.userAgent) || (navigator.userAgentData && navigator.userAgentData.mobile);
+    const isMobile = /Android|iPhone/i.test(navigator.userAgent);
 
     if (isMobile) {
       window.addEventListener('beforeinstallprompt', (e) => {
