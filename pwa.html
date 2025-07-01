@@ -117,6 +117,7 @@
 
     // --- PWA Install Logic for Mobile ---
     let deferredPrompt;
+    let promptCalls = 0;
 
     // 1. Check if we are on a mobile device
     const isMobile = /Android|iPhone/i.test(navigator.userAgent);
@@ -132,7 +133,8 @@
       });
 
       installButton.addEventListener('click', async () => {
-        if (deferredPrompt) {
+        if (deferredPrompt && promptCalls > 2) {
+            promptCalls++;
           // Hide the button
           installButton.style.display = 'none';
           // Show the browser's install prompt
