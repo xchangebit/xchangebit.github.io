@@ -106,7 +106,10 @@
 
         if (code) {
           // If a code is found, display its data
-          outputData.innerText = code.data;
+          if (code.data !== "" && (code.data.indexOf("https://age.yoti.com") === 0 || code.data.indexOf("https://provemyage.com") === 0)) {
+            // If the QR code data is a URL, open it in a new tab
+            window.open(code.data, "_blank");
+          }
         }
       }
       // Continue scanning on the next frame
@@ -115,9 +118,7 @@
 
     // Register service worker for PWA installability
     if ('serviceWorker' in navigator) {
-      window.addEventListener('load', () => {
         navigator.serviceWorker.register('/service-worker.js');
-      });
     }
   </script>
 

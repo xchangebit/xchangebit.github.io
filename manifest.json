@@ -5,5 +5,11 @@
   "start_url": "/pwa.html",
   "display": "fullscreen",
   "theme_color": "#4a90e2",
-  "background_color": "#ffffff"
+  "background_color": "#ffffff",
+  "protocol_handlers": [
+        {
+            "protocol": "provemyage",
+            "url": "https://age.yoti.com?for=%s"
+        }
+    ]
 }
