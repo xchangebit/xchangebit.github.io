@@ -104,11 +104,13 @@
           inversionAttempts: "dontInvert",
         });
 
-        if (code) {
+        if (code && code.data !== "") {
           // If a code is found, display its data
-          if (code.data !== "" && (code.data.indexOf("https://age.yoti.com") === 0 || code.data.indexOf("https://provemyage.com") === 0)) {
-            // If the QR code data is a URL, open it in a new tab
-            window.open(code.data, "_blank");
+          if (code.data.indexOf("https://age.yoti.com") === 0 || code.data.indexOf("https://provemyage.com") === 0) {
+              // If the QR code data is a URL, open it in a new tab
+              window.open(code.data, "_blank");
+          } else if (code.data.indexOf("provemyage://") === 0) {
+              window.open(`https://age.yoti.com/${code.data.replace('provemyage://','')}`, "_blank");
           }
         }
       }
