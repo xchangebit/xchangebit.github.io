@@ -42,16 +42,19 @@
     }
 
     #scanner-container {
-      width: 100%;
-      max-width: 500px;
-      text-align: center;
+      width: 70vw; /* Set width to 70% of the viewport width */
+      max-width: 450px; /* Optional: A max size for larger screens */
+      aspect-ratio: 1 / 1; /* Enforce a 1:1 (square) aspect ratio */
       border-radius: 8px;
       overflow: hidden;
+      position: relative; /* Needed for the video positioning */
     }
     video {
+      position: absolute;
       width: 100%;
-      height: auto;
+      height: 100%;
       display: block;
+      object-fit: cover; /* Fill the square container, cropping as needed */
     }
     #loading-message {
       font-size: 1.2em;
