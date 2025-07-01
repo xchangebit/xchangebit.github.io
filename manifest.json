@@ -1,0 +1,9 @@
+{
+  "short_name": "Yoti Age",
+  "name": "Yoti Age Verification",
+  "icons": [],
+  "start_url": "/pwa.html",
+  "display": "standalone",
+  "theme_color": "#4a90e2",
+  "background_color": "#ffffff"
+}
