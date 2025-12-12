@@ -137,152 +137,303 @@
 
     <script>
         // --- DATA ---
-        const defaultSolutions = ["Yoti Digital ID Wallet", "Facial Age Estimation", "Age from ID Document", "Age Tokens", "Yoti Keys"];
+        const defaultSolutions = ["Yoti Digital ID Wallet", "Facial Age Estimation", "Age from ID Document", "Yoti Keys"];
         const noRegulationData = {
-            "United States": ["Yoti Digital ID Wallet", "Facial Age Estimation", "Age from ID Document", "Email Age Inference", "Mobile age check", "Database checks", "SSN checks", "Credit Card checks", "Age Tokens", "Yoti Keys", "Address database checks"],
-            "Denmark": ["Yoti Digital ID Wallet", "Facial Age Estimation", "Age from ID Document", "MIT ID", "Age Tokens", "Yoti Keys"],
-            "Aruba": ["Facial Age Estimation", "Age Tokens", "Yoti Keys"],
-            "Åland Islands": ["Facial Age Estimation", "Age Tokens", "Yoti Keys"],
-            "Aland Islands": ["Facial Age Estimation", "Age Tokens", "Yoti Keys"],
-            "St. Barthélemy": ["Facial Age Estimation", "Age Tokens", "Yoti Keys"],
-            "St. Barthelemy": ["Facial Age Estimation", "Age Tokens", "Yoti Keys"],
-            "Cocos (Keeling) Islands": ["Facial Age Estimation", "Age Tokens", "Yoti Keys"],
-            "Cocos Islands": ["Facial Age Estimation", "Age Tokens", "Yoti Keys"],
-            "Keeling Islands": ["Facial Age Estimation", "Age Tokens", "Yoti Keys"],
-            "Cook Islands": ["Facial Age Estimation", "Age Tokens", "Yoti Keys"],
-            "Curaçao": ["Facial Age Estimation", "Age Tokens", "Yoti Keys"],
-            "Curacao": ["Facial Age Estimation", "Age Tokens", "Yoti Keys"],
-            "Christmas Island": ["Facial Age Estimation", "Age Tokens", "Yoti Keys"],
-            "Western Sahara": ["Facial Age Estimation", "Age Tokens", "Yoti Keys"],
-            "Falkland Is.": ["Facial Age Estimation", "Age Tokens", "Yoti Keys"],
-            "Guadeloupe": ["Facial Age Estimation", "Age Tokens", "Yoti Keys"],
-            "French Guiana": ["Facial Age Estimation", "Age Tokens", "Yoti Keys"],
-            "British Indian Ocean Territory": ["Facial Age Estimation", "Age Tokens", "Yoti Keys"],
-            "St. Martin": ["Facial Age Estimation", "Age Tokens", "Yoti Keys"],
-            "French Polynesia": ["Facial Age Estimation", "Age Tokens", "Yoti Keys"],
-            "Réunion": ["Facial Age Estimation", "Age Tokens", "Yoti Keys"],
-            "Reunion": ["Facial Age Estimation", "Age Tokens", "Yoti Keys"],
-            "St. Helena": ["Facial Age Estimation", "Age Tokens", "Yoti Keys"],
-            "Ascension Island": ["Facial Age Estimation", "Age Tokens", "Yoti Keys"],
-            "Tristan da Cunha": ["Facial Age Estimation", "Age Tokens", "Yoti Keys"],
-            "Svalbard & Jan Mayen": ["Facial Age Estimation", "Age Tokens", "Yoti Keys"],
-            "St. Pierre & Miquelon": ["Facial Age Estimation", "Age Tokens", "Yoti Keys"],
-            "Sint Maarten": ["Facial Age Estimation", "Age Tokens", "Yoti Keys"],
-            "Tokelau": ["Facial Age Estimation", "Age Tokens", "Yoti Keys"],
-            "Wallis & Futuna": ["Facial Age Estimation", "Age Tokens", "Yoti Keys"],
+            "United States": ["Yoti Digital ID Wallet", "Facial Age Estimation", "Age from ID Document", "Email Age Inference", "Mobile age check", "Database checks", "SSN checks", "Credit Card checks","Yoti Keys", "Address database checks"],
+            "Denmark": ["Yoti Digital ID Wallet", "Facial Age Estimation", "Age from ID Document", "MIT ID", "Yoti Keys"],
+            "Aruba": ["Facial Age Estimation","Yoti Keys"],
+            "Åland Islands": ["Facial Age Estimation","Yoti Keys"],
+            "Aland Islands": ["Facial Age Estimation","Yoti Keys"],
+            "St. Barthélemy": ["Facial Age Estimation","Yoti Keys"],
+            "St. Barthelemy": ["Facial Age Estimation","Yoti Keys"],
+            "Cocos (Keeling) Islands": ["Facial Age Estimation","Yoti Keys"],
+            "Cocos Islands": ["Facial Age Estimation","Yoti Keys"],
+            "Keeling Islands": ["Facial Age Estimation","Yoti Keys"],
+            "Cook Islands": ["Facial Age Estimation","Yoti Keys"],
+            "Curaçao": ["Facial Age Estimation","Yoti Keys"],
+            "Curacao": ["Facial Age Estimation","Yoti Keys"],
+            "Christmas Island": ["Facial Age Estimation","Yoti Keys"],
+            "Western Sahara": ["Facial Age Estimation","Yoti Keys"],
+            "Falkland Is.": ["Facial Age Estimation","Yoti Keys"],
+            "Guadeloupe": ["Facial Age Estimation","Yoti Keys"],
+            "French Guiana": ["Facial Age Estimation","Yoti Keys"],
+            "British Indian Ocean Territory": ["Facial Age Estimation","Yoti Keys"],
+            "St. Martin": ["Facial Age Estimation","Yoti Keys"],
+            "French Polynesia": ["Facial Age Estimation","Yoti Keys"],
+            "Réunion": ["Facial Age Estimation","Yoti Keys"],
+            "Reunion": ["Facial Age Estimation","Yoti Keys"],
+            "St. Helena": ["Facial Age Estimation","Yoti Keys"],
+            "Ascension Island": ["Facial Age Estimation","Yoti Keys"],
+            "Tristan da Cunha": ["Facial Age Estimation","Yoti Keys"],
+            "Svalbard & Jan Mayen": ["Facial Age Estimation","Yoti Keys"],
+            "St. Pierre & Miquelon": ["Facial Age Estimation","Yoti Keys"],
+            "Sint Maarten": ["Facial Age Estimation","Yoti Keys"],
+            "Tokelau": ["Facial Age Estimation","Yoti Keys"],
+            "Wallis & Futuna": ["Facial Age Estimation","Yoti Keys"],
         };
         const noSolution = ["North Korea","Antartica","Fr. S. Antarctic Lands"];
         const regulationData = {
             "Alabama": {
+                enforcement_date: "active",
                 regulation: "Requires 'Reasonable age verification'. This can include a digitized ID card, government-issued identification, or any commercially reasonable method with Identity Assurance Level 2 (IAL2).",
-                solutions: ["Yoti Digital ID Wallet", "Facial Age Estimation", "Age from ID Document", "Age Tokens", "Email Age Inference", "Mobile age check", "Database checks", "SSN checks", "Credit Card checks"]
+                solutions: ["Yoti Digital ID Wallet", "Facial Age Estimation", "Age from ID Document", "Yoti Keys"],
+                penalties: [
+                    "Fines of up to $5,000 per day for non-compliance with age verification requirements.",
+                    "Potential blocking orders for websites that fail to implement effective age verification measures, leading to temporary or permanent bans on operating within Alabama."
+                ]
             },
             "Arizona": {
+                enforcement_date: "Vetoed",
                 regulation: "Requires 'Reasonable age verification'. This can include a digitized ID card, government-issued identification, or any commercially reasonable method with Identity Assurance Level 2 (IAL2).",
-                solutions: ["Yoti Digital ID Wallet", "Facial Age Estimation", "Age from ID Document", "Age Tokens", "Email Age Inference", "Mobile age check", "Database checks", "SSN checks", "Credit Card checks"]
+                solutions: ["Yoti Digital ID Wallet", "Facial Age Estimation", "Age from ID Document", "Yoti Keys"],
+                penalties: [
+                    "Fines of up to $5,000 per day for non-compliance with age verification requirements.",
+                    "Potential blocking orders for websites that fail to implement effective age verification measures, leading to temporary or permanent bans on operating within Arizona."
+                ]
             },
             "Arkansas": {
+                enforcement_date: "active",
                 regulation: "Requires 'Reasonable age verification'. This can include a digitized ID card, government-issued identification, or any commercially reasonable method with Identity Assurance Level 2 (IAL2).",
-                solutions: ["Yoti Digital ID Wallet", "Age from ID Document", "Facial Age Estimation"]
+                solutions: ["Yoti Digital ID Wallet", "Age from ID Document", "Facial Age Estimation"],
+                penalties: [
+                    "Fines of up to $5,000 per day for non-compliance with age verification requirements.",
+                    "Potential blocking orders for websites that fail to implement effective age verification measures, leading to temporary or permanent bans on operating within Arkansas."
+                ]
             },
             "Florida": {
+                enforcement_date: "active",
                 regulation: "A choice must be offered between 'Standard age verification' (any commercially reasonable method) and 'Anonymous age verification' (conducted by a US-based, non-foreign-controlled third party that does not retain personal data).",
-                solutions: ["<b>For 'Standard':</b> Facial Age Estimation, Yoti Digital ID Wallet, Mobile age check, Database checks, SSN checks, Credit Card checks, Yoti Keys, Age Tokens", "<b>For 'Anonymous':</b> Yoti has partnered with a US-based company to provide a compliant solution."]
+                solutions: ["<b>For 'Standard':</b> Facial Age Estimation, Yoti Digital ID Wallet, Mobile age check, Database checks, SSN checks, Credit Card checks, Yoti Keys", "<b>For 'Anonymous':</b> Yoti has partnered with a US-based company to provide a compliant solution."],
+                penalties: [
+                    "Fines of up to $5,000 per day for non-compliance with age verification requirements.",
+                    "Potential blocking orders for websites that fail to implement effective age verification measures, leading to temporary or permanent bans on operating within Florida."
+                ]
             },
             "Georgia": {
+                enforcement_date: "active",
                 regulation: "Requires 'Reasonable age verification methods' which can include digitized ID cards, verification via a third-party service using a commercially available database, or any method relying on public or private transactional data.",
-                solutions: ["Yoti Digital ID Wallet", "Age from ID Document", "Facial Age Estimation"]
+                solutions: ["Yoti Digital ID Wallet", "Age from ID Document", "Yoti Keys", "Email Age Inference", "Mobile age check", "Database checks", "SSN checks", "Credit Card checks"],
+                penalties: [
+                    "Fines of up to $5,000 per day for non-compliance with age verification requirements.",
+                    "Potential blocking orders for websites that fail to implement effective age verification measures, leading to temporary or permanent bans on operating within Georgia."
+                ]
             },
             "Idaho": {
+                enforcement_date: "active",
                 regulation: "Requires 'Reasonable age verification methods' which can include digitized ID cards, verification via a third-party service using a commercially available database, or any method relying on public or private transactional data.",
-                solutions: ["Yoti Digital ID Wallet", "Age from ID Document", "Age Tokens", "Email Age Inference", "Mobile age check", "Database checks", "SSN checks", "Credit Card checks"]
+                solutions: ["Yoti Digital ID Wallet", "Age from ID Document", "Yoti Keys", "Email Age Inference", "Mobile age check", "Database checks", "SSN checks", "Credit Card checks"],
+                penalties: [
+                    "Fines of up to $5,000 per day for non-compliance with age verification requirements.",
+                    "Potential blocking orders for websites that fail to implement effective age verification measures, leading to temporary or permanent bans on operating within Idaho."
+                ]
             },
             "Indiana": {
+                enforcement_date: "active",
                 regulation: "Requires 'Reasonable age verification methods' which can include digitized ID cards, verification via a third-party service using a commercially available database, or any method relying on public or private transactional data.",
-                solutions: ["Yoti Digital ID Wallet", "Age Tokens", "Email Age Inference", "Mobile age check", "Database checks", "SSN checks", "Credit Card checks"]
+                solutions: ["Yoti Digital ID Wallet", "Age from ID Document", "Yoti Keys", "Email Age Inference", "Mobile age check", "Database checks", "SSN checks", "Credit Card checks"],
+                penalties: [
+                    "Fines of up to $5,000 per day for non-compliance with age verification requirements.",
+                    "Potential blocking orders for websites that fail to implement effective age verification measures, leading to temporary or permanent bans on operating within Indiana."
+                ]
             },
             "Kansas": {
+                enforcement_date: "active",
                 regulation: "Methods include using a 'commercially available database' or 'any other commercially reasonable method of age and identity verification'. Methods require approval by the state's Attorney General.",
-                solutions: ["Age Tokens", "Facial Age Estimation", "Age from ID Document", "Yoti Digital ID Wallet", "Email Age Inference", "Mobile age check", "Database checks", "SSN checks", "Credit Card checks"]
+                solutions: ["Yoti Keys", "Facial Age Estimation", "Age from ID Document", "Yoti Digital ID Wallet", "Email Age Inference", "Mobile age check", "Database checks", "SSN checks", "Credit Card checks"],
+                penalties: [
+                    "Fines of up to $5,000 per day for non-compliance with age verification requirements.",
+                    "Potential blocking orders for websites that fail to implement effective age verification measures, leading to temporary or permanent bans on operating within Kansas."
+                ]
             },
             "Kentucky": {
+                enforcement_date: "active",
                 regulation: "Methods include using a 'commercially available database' or 'any other commercially reasonable method of age and identity verification'. Methods require approval by the state's Attorney General.",
-                solutions: ["Age Tokens", "Facial Age Estimation", "Age from ID Document", "Yoti Digital ID Wallet", "Email Age Inference", "Mobile age check", "Database checks", "SSN checks", "Credit Card checks"]
+                solutions: ["Yoti Keys", "Facial Age Estimation", "Age from ID Document", "Yoti Digital ID Wallet", "Email Age Inference", "Mobile age check", "Database checks", "SSN checks", "Credit Card checks"],
+                penalties: [
+                    "Fines of up to $5,000 per day for non-compliance with age verification requirements.",
+                    "Potential blocking orders for websites that fail to implement effective age verification measures, leading to temporary or permanent bans on operating within Kentucky."
+                ]
             },
             "Louisiana": {
+                enforcement_date: "active",
                 regulation: "Requires 'Reasonable age verification methods' which can include digitized ID cards, verification via a third-party service using a commercially available database, or any method relying on public or private transactional data.",
-                solutions: ["Louisiana's LA Wallet", "Yoti Digital ID Wallet", "Facial Age Estimation", "Age from ID Document", "Age Tokens", "Email Age Inference", "Mobile age check", "Database checks", "SSN checks", "Credit Card checks"]
+                solutions: ["Louisiana's LA Wallet", "Yoti Digital ID Wallet", "Facial Age Estimation", "Age from ID Document", "Yoti Keys", "Email Age Inference", "Mobile age check", "Database checks", "SSN checks", "Credit Card checks"],
+                penalties: [
+                    "Fines of up to $5,000 per day for non-compliance with age verification requirements.",
+                    "Potential blocking orders for websites that fail to implement effective age verification measures, leading to temporary or permanent bans on operating within Louisiana."
+                ]
             },
             "Mississippi": {
+                enforcement_date: "Enjoined",
                 regulation: "Requires 'Reasonable age verification methods' which can include digitized ID cards, verification via a third-party service using a commercially available database, or any method relying on public or private transactional data.",
-                solutions: ["Yoti Digital ID Wallet", "Facial Age Estimation", "Age from ID Document", "Age Tokens", "Email Age Inference", "Mobile age check", "Database checks", "SSN checks", "Credit Card checks"]
+                solutions: ["Yoti Digital ID Wallet", "Age from ID Document", "Yoti Keys", "Email Age Inference", "Mobile age check", "Database checks", "SSN checks", "Credit Card checks"],
+                penalties: [
+                    "Fines of up to $5,000 per day for non-compliance with age verification requirements.",
+                    "Potential blocking orders for websites that fail to implement effective age verification measures, leading to temporary or permanent bans on operating within Mississippi."
+                ]
             },
             "Montana": {
+                enforcement_date: "active",
                 regulation: "Requires 'Reasonable age verification methods' which can include digitized ID cards, verification via a third-party service using a commercially available database, or any method relying on public or private transactional data  for the purpose of satisfying a request or event.",
-                solutions: ["Yoti Digital ID Wallet", "Facial Age Estimation", "Age from ID Document", "Age Tokens", "Email Age Inference", "Mobile age check", "Database checks", "SSN checks", "Credit Card checks"]
+                solutions: ["Yoti Digital ID Wallet", "Age from ID Document", "Yoti Keys", "Email Age Inference", "Mobile age check", "Database checks", "SSN checks", "Credit Card checks"],
             },
             "Nebraska": {
+                enforcement_date: "active",
                 regulation: "Requires 'Reasonable age verification methods' which can include digitized ID cards, verification via a third-party service using a commercially available database, or any method relying on public or private transactional data.",
-                solutions: ["Yoti Digital ID Wallet", "Facial Age Estimation", "Age from ID Document", "Age Tokens", "Email Age Inference", "Mobile age check", "Database checks", "SSN checks", "Credit Card checks"]
+                solutions: ["Yoti Digital ID Wallet", "Age from ID Document", "Yoti Keys", "Email Age Inference", "Mobile age check", "Database checks", "SSN checks", "Credit Card checks"],
+                penalties: [
+                    "Fines of up to $5,000 per day for non-compliance with age verification requirements.",
+                    "Potential blocking orders for websites that fail to implement effective age verification measures, leading to temporary or permanent bans on operating within Nebraska."
+                ]
             },
             "Oklahoma": {
+                enforcement_date: "Failed",
                 regulation: "'Reasonable age verification methods' include digitized ID cards, verification via a third-party service using a commercially available database, or any method relying on public or private transactional data.",
-                solutions: ["Yoti Digital ID Wallet", "Facial Age Estimation", "Age from ID Document", "SSN checks", "Credit Card checks", "Age Tokens", "Email Age Inference", "Mobile age check", "Database checks"]
+                solutions: ["Yoti Digital ID Wallet", "Facial Age Estimation", "Age from ID Document", "SSN checks", "Credit Card checks", "Age Tokens", "Email Age Inference", "Mobile age check", "Database checks"],
+                penalties: [
+                    "Fines of up to $5,000 per day for non-compliance with age verification requirements.",
+                    "Potential blocking orders for websites that fail to implement effective age verification measures, leading to temporary or permanent bans on operating within Oklahoma."
+                ]
             },
             "South Carolina": {
+                enforcement_date: "active",
                 regulation: "'Reasonable age verification methods' include digitized ID cards, verification via a third-party service using a commercially available database, or any method relying on public or private transactional data.",
-                solutions: ["Yoti Digital ID Wallet", "Facial Age Estimation", "Age from ID Document", "Age Tokens", "Email Age Inference", "Mobile age check", "Database checks", "SSN checks", "Credit Card checks"]
+                solutions: ["Yoti Digital ID Wallet", "Facial Age Estimation", "Age from ID Document", "Yoti Keys", "Email Age Inference", "Mobile age check", "Database checks", "SSN checks", "Credit Card checks"],
+                penalties: [
+                    "Fines of up to $5,000 per day for non-compliance with age verification requirements.",
+                    "Potential blocking orders for websites that fail to implement effective age verification measures, leading to temporary or permanent bans on operating within South Carolina."
+                ]
             },
             "Tennessee": {
+                enforcement_date: "01-07-2025",
                 regulation: "Requires 'government ID with a liveness test' and must use 'the device by which the attempt to view content' is being made.' Tennesse also requires reverification every 60 minutes.",
-                solutions: ["Age from ID Document", "Yoti Digital ID Wallet", "Yoti Keys", "Age Tokens"]
+                solutions: ["Age from ID Document", "Yoti Digital ID Wallet"],
+                penalties: [
+                    "Fines of up to $5,000 per day for non-compliance with age verification requirements.",
+                    "Potential blocking orders for websites that fail to implement effective age verification measures, leading to temporary or permanent bans on operating within Tennessee."
+                ]
             },
             "Texas": {
+                enforcement_date: "active",
                 regulation: "Requires 'Reasonable age verification methods' which can include digital identification, verification via a third-party service using a commercially available database, or any method relying on public or private transactional data. Further clarification was provided by the Fifth Circuit Court of Appeals, stating that 'companies could use techniques such as “selfie matching” or age estimation.'",
-                solutions: ["Facial Age Estimation", "Age from ID Document", "Yoti Digital ID Wallet", "Email Age Inference", "Mobile age check", "Database checks", "SSN checks", "Credit Card checks", "Age Tokens"]
+                solutions: ["Facial Age Estimation", "Age from ID Document", "Yoti Digital ID Wallet", "Email Age Inference", "Mobile age check", "Database checks", "SSN checks", "Credit Card checks", "Yoti Keys"],
+                penalties: [
+                    "Fines of up to $10,000 per day for non-compliance with age verification requirements.",
+                    "Potential blocking orders for websites that fail to implement effective age verification measures, leading to temporary or permanent bans on operating within Texas."
+                ]
             },
             "Utah": {
+                enforcement_date: "active",
                 regulation: "Similar to Oklahoma, with strict rules against retaining identifying information after verification. The AG's office has shown support for privacy-preserving methods like age estimation.",
-                solutions: ["Facial Age Estimation", "Age from ID Document", "Yoti Digital ID Wallet", "Email Age Inference", "Mobile age check", "Database checks", "SSN checks", "Credit Card checks", "Age Tokens"]
+                solutions: ["Facial Age Estimation", "Age from ID Document", "Yoti Digital ID Wallet", "Email Age Inference", "Mobile age check", "Database checks", "SSN checks", "Credit Card checks", "Yoti Keys"],
+                penalties: [
+                    "Fines of up to $5,000 per day for non-compliance with age verification requirements.",
+                    "Potential blocking orders for websites that fail to implement effective age verification measures, leading to temporary or permanent bans on operating within Utah."
+                ]
             },
             "Virginia": {
+                enforcement_date: "active",
                 regulation: "Requires 'Reasonable age verification methods' which can include digitized ID cards, verification via a third-party service using a commercially available database, or any method relying on public or private transactional data.",
-                solutions: ["Yoti Digital ID Wallet", "Facial Age Estimation", "Age from ID Document", "Age Tokens", "Email Age Inference", "Mobile age check", "Database checks", "SSN checks", "Credit Card checks"],
+                solutions: ["Yoti Digital ID Wallet", "Facial Age Estimation", "Age from ID Document", "Yoti Keys", "Email Age Inference", "Mobile age check", "Database checks", "SSN checks", "Credit Card checks"],
+                penalties: [
+                    "Civil liability allowing for damages of up to $5,000 per violation, plus attorney fees.",
+                    "Potential blocking orders for websites that fail to implement effective age verification measures, leading to temporary or permanent bans on operating within Virginia."
+                ]
+            },
+            "Brazil": {
+                enforcement_date: "17/03/2026",
+                regualator: ["ANPD"],
+                regulation: "The Brazilian regulator (ANPD) is yet to publish detailed guidance on age verification requirements under the Digital ECA. However, the law clearly states that self-declaration is not sufficient and that services must implement effective age verification measures.",
+                solutions: ["Digital ID Wallet", "Facial Age Estimation", "Age from ID Document", "Yoti Keys", "CPF checks"],
+                penalties: [
+                    "Fines of up to 2% of revenue (capped at R$50 million per infraction) for non-compliance with age verification requirements.",
+                    "Potential suspension of services that fail to implement effective age verification measures, leading to temporary or permanent bans on operating within Brazil."
+                ]
             },
             "Germany": {
+                enforcement_date: "active",
                 regulation: "KJM evaluates and approves age verification systems.",
-                solutions: ["Digital ID Wallet", "Facial Age Estimation", "Age from ID Document"]
+                regulator: ["KJM"],
+                solutions: ["Digital ID Wallet", "Facial Age Estimation", "Age from ID Document"],
+                penalties: [
+                    "Fines of up to €50,000 (approximately $54,000 USD) for non-compliance with age verification requirements.",
+                    "Potential blocking orders for websites that fail to implement effective age verification measures, leading to temporary or permanent bans on operating within Germany."
+                ]
             },
             "Finland": {
+                enforcement_date: "active",
+                regulators: ["Traficom","KAVI"],
                 regulation: "Traficom and KAVI are the regulators responsible for The Finnish Act On Audiovisual Programmes (710/2011). Like much of the EU, Finland's regulation focuses on effectiveness, user control over data, privacy and a proportionality with less emphasis on specific technologies and techniques.",
-                solutions: ["FTN", "Yoti Digital ID Wallet", "Age from ID Document", "Facial Age Estimation", "Yoti Keys", "Credit Card checks"]
+                solutions: ["FTN", "Yoti Digital ID Wallet", "Age from ID Document", "Facial Age Estimation", "Yoti Keys", "Credit Card checks"],
+                penalties: [
+                    "Fines of up to 6% of global turnover under the Digital Services Act (DSA) for non-compliance with age verification requirements.",
+                    "Potential blocking orders for websites that fail to implement effective age verification measures, leading to temporary or permanent bans on operating within Finland."
+                ]
             },
             "France": {
+                enforcement_date: "active",
+                regulators: ["ARCOM"],
                 regulation: "ARCOM (the French regulator) has detailed requirements focusing on reliability (liveness detection), user control over data, data minimization, and a 'double-anonymity' principle to protect users.",
-                solutions: ["Yoti Digital ID Wallet", "The system is designed to provide 'double-anonymity' by separating the age proof from the user's identity and the requesting platform.", "Facial Age Estimation and ID Verification are also offered.", "Age Tokens (with passkey)"]
+                solutions: ["Yoti Digital ID Wallet", "The system is designed to provide 'double-anonymity' by separating the age proof from the user's identity and the requesting platform.", "Facial Age Estimation and ID Verification are also offered.", "Age Keys"],
+                penalties: [
+                    "Fines of up to €250,000 (approximately $270,000 USD) for non-compliance with age verification requirements.",
+                    "Potential blocking orders for websites that fail to implement effective age verification measures, leading to temporary or permanent bans on operating within France."
+                ]
             },
             "Ireland": {
+                enforcement_date: "active",
                 regulation: "Coimisiún na Meán (the Irish regulator) are responsible for Online Safety Code",
-                solutions: ["Facial Age Estimation", "Age from ID Document", "Yoti Digital ID Wallet", "Yoti Keys", "Age Tokens", "Email Age Inference", "Credit Card age check"]
+                regulators: ["Coimisiún na Meán"],
+                solutions: ["Facial Age Estimation", "Age from ID Document", "Yoti Digital ID Wallet", "Yoti Keys", "Email Age Inference", "Credit Card age check"],
+                penalties: [
+                    "Fines of up to €20 million or 10% of relevant turnover (whichever is higher) under the Online Safety and Media Regulation Act 2022.",
+                    "Potential blocking orders for websites that fail to implement effective age verification measures, leading to temporary or permanent bans on operating within Ireland."
+                ]
             },
             "Italy": {
+                enforcement_date: "active",
                 regulation: "AGCOM (the Italian regulator) has detailed requirements focusing on  user control over data, data minimization, and a 'double-anonymity' principle to protect users.",
-                solutions: ["Yoti Digital ID Wallet", "The system is designed to provide 'double-anonymity' by separating the age proof from the user's identity and the requesting platform."]
+                solutions: ["Yoti Digital ID Wallet", "The system is designed to provide 'double-anonymity' by separating the age proof from the user's identity and the requesting platform."],
+                penalties: [
+                    "Fines of up to €250,000 (approximately $270,000 USD) for non-compliance with age verification requirements.",
+                    "Potential blocking orders for websites that fail to implement effective age verification measures, leading to temporary or permanent bans on operating within Italy."
+                ]
             },
             "Poland": {
+                enforcement_date: "active",
                 regulation: "The Polish government is currently advancing a new Act on the protection of minors from harmful online content. This proposed legislation will oblige any service provider offering access to pornographic content to implement strict age verification mechanisms, moving beyond simple self-declaration",
-                solutions: ["Yoti Digital ID Wallet", "Facial Age Estimation", "Age from ID Document", "Yoti Keys"]
+                solutions: ["Yoti Digital ID Wallet", "Facial Age Estimation", "Age from ID Document", "Yoti Keys"],
+                penalties: [
+                    "Fines of up to PLN 1,000,000 (approximately $230,000 USD) for non-compliance with age verification requirements.",
+                    "Potential blocking orders for websites that fail to implement effective age verification measures, leading to temporary or permanent bans on operating within Poland."
+                ]
             },
             "Spain": {
+                enforcement_date: "active",
                 regulation: "Spain is in the final stages of approving its new Organic Law for the Protection of Minors in Digital Environments. This comprehensive law will criminalize making pornographic material indiscriminately available to minors and legally mandates the use of effective age verification systems on adult platforms.",
-                solutions: ["Yoti Digital ID Wallet", "Facial Age Estimation", "Age from ID Document", "Yoti Keys"]
+                solutions: ["Yoti Digital ID Wallet", "Facial Age Estimation", "Age from ID Document", "Yoti Keys"],
+                penalties: [
+                    "Fines of up to €600,000 (approximately $650,000 USD) for non-compliance with age verification requirements.",
+                    "Potential blocking orders for websites that fail to implement effective age verification measures, leading to temporary or permanent bans on operating within Spain."
+                ]
             },
             "Sweden": {
+                enforcement_date: "active",
                 regulation: "Regulation is primarily focused on data protection and privacy, with the Swedish Data Protection Authority (IMY) overseeing compliance.",
-                solutions: ["Swedish Bank ID", "Facial Age Estimation", "Age from ID Document", "Yoti Digital ID Wallet"]
+                solutions: ["Swedish Bank ID", "Facial Age Estimation", "Age from ID Document", "Yoti Digital ID Wallet"],
+                penalties: [
+                    "Fines of up to 6% of global turnover under the Digital Services Act (DSA) for non-compliance with age verification requirements.",
+                    "Potential blocking orders for websites that fail to implement effective age verification measures, leading to temporary or permanent bans on operating within Sweden."
+                ]
             },
             "United Kingdom": {
+                enforcement_date: "active",
+                regulators: ["OFCOM","ICO"],
                 regulation: "OFCOM provided guidance on the requirements for highly effective age assurance measures to be implemented. A separate regulator, the ICO focuses on data protection and privacy.",
+                penalties: [
+                    "Fines of up to £18 million or 10% of global qualifying revenue (whichever is higher) for non-compliance with age verification requirements.",
+                    "Potential blocking orders for websites that fail to implement effective age verification measures, leading to temporary or permanent bans on operating within the UK."
+                ],
                 solutions: ["Facial Age Estimation", "Age from ID Document", "Yoti Digital ID Wallet", "Post Office Easy ID", "Lloyds Bank Smart ID", "Yoti Keys", "Age Tokens", "Mobile age check", "Email Age Inference", "Credit Card age check", "Address database checks"]
             },
             
@@ -358,6 +509,11 @@
             if (data) {
                 infoContent.innerHTML = `
                     <div class="space-y-6">
+                        ${data.enforcement_date ? `
+                        <div>
+                            <h3 class="font-bold text-lg text-slate-800 tracking-tight">Enforcement Date</h3>
+                            <p class="mt-2">${data.enforcement_date}</p>
+                        </div>` : ''}
                         <div>
                             <h3 class="font-bold text-lg text-slate-800 tracking-tight">Regulation Summary</h3>
                             <p class="mt-2">${data.regulation}</p>
